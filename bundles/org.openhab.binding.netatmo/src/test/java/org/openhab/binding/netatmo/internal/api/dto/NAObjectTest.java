@@ -26,6 +26,8 @@ import org.openhab.core.i18n.TimeZoneProvider;
 import org.openhab.core.io.net.http.HttpClientFactory;
 import org.osgi.service.component.ComponentContext;
 
+import io.swagger.client.model.NAObject;
+
 /**
  * @author Gaël L'hopital - Initial contribution
  */

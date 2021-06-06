@@ -13,12 +13,13 @@
 package org.openhab.binding.netatmo.internal;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.graalvm.compiler.lir.CompositeValue.Component;
 import org.openhab.core.thing.binding.BaseDynamicStateDescriptionProvider;
 import org.openhab.core.thing.i18n.ChannelTypeI18nLocalizationService;
 import org.openhab.core.thing.type.DynamicStateDescriptionProvider;
 import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
+
+import jdk.nashorn.internal.ir.annotations.Reference;
 
 /**
  * Dynamic provider of state options while leaving other state description fields as original.
