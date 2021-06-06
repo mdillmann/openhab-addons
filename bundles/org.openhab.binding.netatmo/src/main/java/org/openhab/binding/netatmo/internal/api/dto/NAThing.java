@@ -39,6 +39,7 @@ public class NAThing extends NAObject {
     @SerializedName(value = "firmware", alternate = { "firmware_revision" })
     private int firmware = -1;
     private @Nullable ZonedDateTime setupDate;
+    private @Nullable String roomId;
     private List<MeasureType> dataType = List.of();
     private @NonNullByDefault({}) ModuleType type;
 
@@ -91,5 +92,9 @@ public class NAThing extends NAObject {
 
     public @Nullable String getBridge() {
         return bridge;
+    }
+
+    public @Nullable String getRoomId() {
+        return roomId;
     }
 }

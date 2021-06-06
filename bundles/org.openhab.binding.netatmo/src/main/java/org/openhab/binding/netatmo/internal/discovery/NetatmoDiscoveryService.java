@@ -85,6 +85,7 @@ public class NetatmoDiscoveryService extends AbstractDiscoveryService implements
         try {
             List<NAHome> result = apiBridge.getHomeApi().getHomeList(null);
             Set<String> myWeatherStations = new HashSet<>();
+            Set<@Nullable String> roomsWithEnergyModules = new HashSet<>();
             result.forEach(home -> {
                 ThingUID homeUID = createDiscoveredThing(null, home, home.getType());
                 home.getModules().values().stream().filter(module -> module.getBridge() == null)
@@ -99,14 +100,26 @@ public class NetatmoDiscoveryService extends AbstractDiscoveryService implements
                                         createDiscoveredThing(bridgeUID, foundChild, foundChild.getType());
                                     });
                         });
+                // will this work ? /homesdata from Energy-API won't return security-info (needs /gethomedata)
                 if (home instanceof NAHomeSecurity) {
                     NAHomeSecurity homesec = (NAHomeSecurity) home;
                     List<NAPerson> persons = homesec.getKnownPersons();
                     persons.forEach(person -> createDiscoveredThing(homeUID, person, person.getType()));
                 }
+                // mark energy-modules that are assigned to a room
+                home.getModules().values().stream().filter(module -> module.getRoomId() != null).forEach(module -> {
+                    if (module.getType() == ModuleType.NRV || module.getType() == ModuleType.NATherm1) {
+                        if (module.getRoomId() != null) {
+                            roomsWithEnergyModules.add(module.getRoomId());
+                        }
+                    }
+                });
                 // Are or should modules be childs of their room ?
+                // only create NARoom for energy-modules for now
                 home.getRooms().forEach(room -> {
-                    ThingUID moduleUID = createDiscoveredThing(homeUID, room, room.getType());
+                    if (roomsWithEnergyModules.contains(room.getId())) {
+                        ThingUID moduleUID = createDiscoveredThing(homeUID, room, room.getType());
+                    }
                 });
             });
             // Get weather station and favorites !!! Ongoing work
@@ -133,7 +146,9 @@ public class NetatmoDiscoveryService extends AbstractDiscoveryService implements
                     e.printStackTrace();
                 }
             });
-        } catch (NetatmoException e) {
+        } catch (
+
+        NetatmoException e) {
             logger.warn("Error getting Home List", e);
         }
         // apiBridge.getAirCareApi().ifPresent(api -> searchHomeCoach(api));

@@ -12,7 +12,11 @@
  */
 package org.openhab.binding.netatmo.internal.api;
 
-import static org.openhab.binding.netatmo.internal.api.NetatmoConstants.*;
+import static org.openhab.binding.netatmo.internal.api.NetatmoConstants.NA_GETTHERMOSTAT_SPATH;
+import static org.openhab.binding.netatmo.internal.api.NetatmoConstants.NA_HOMESTATUS_SPATH;
+import static org.openhab.binding.netatmo.internal.api.NetatmoConstants.NA_SETROOMTHERMPOINT_SPATH;
+import static org.openhab.binding.netatmo.internal.api.NetatmoConstants.NA_SETTHERMMODE_SPATH;
+import static org.openhab.binding.netatmo.internal.api.NetatmoConstants.NA_SWITCHSCHEDULE_SPATH;
 
 import javax.ws.rs.core.UriBuilder;
 
@@ -95,7 +99,7 @@ public class EnergyApi extends RestManager {
      *             response body
      */
     public boolean setThermMode(String homeId, String mode) throws NetatmoException {
-        UriBuilder uriBuilder = getAppUriBuilder().path(NA_SETTHERMMODE_SPATH);
+        UriBuilder uriBuilder = getApiUriBuilder().path(NA_SETTHERMMODE_SPATH);
         String payload = String.format("{\"home_id\":\"%s\",\"mode\":\"%s\"}", homeId, mode);
         post(uriBuilder.build(), ApiOkResponse.class, payload);
         return true;
@@ -118,7 +122,7 @@ public class EnergyApi extends RestManager {
      */
     public boolean setRoomThermpoint(String homeId, String roomId, SetpointMode mode, long endtime, double temp)
             throws NetatmoException {
-        UriBuilder uriBuilder = getAppUriBuilder().path(NA_SETROOMTHERMPOINT_SPATH).queryParam("home_id", roomId)
+        UriBuilder uriBuilder = getApiUriBuilder().path(NA_SETROOMTHERMPOINT_SPATH).queryParam("home_id", roomId)
                 .queryParam("room_id", mode.getDescriptor());
         if (mode == SetpointMode.MANUAL || mode == SetpointMode.MAX) {
             uriBuilder.queryParam("endtime", endtime);
