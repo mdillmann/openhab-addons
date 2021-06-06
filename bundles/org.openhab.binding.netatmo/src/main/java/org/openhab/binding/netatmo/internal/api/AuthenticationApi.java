@@ -13,7 +13,13 @@
 package org.openhab.binding.netatmo.internal.api;
 
 import static org.openhab.binding.netatmo.internal.api.NetatmoConstants.ALL_SCOPES;
-import static org.openhab.core.auth.oauth2client.internal.Keyword.*;
+import static org.openhab.core.auth.oauth2client.internal.Keyword.CLIENT_ID;
+import static org.openhab.core.auth.oauth2client.internal.Keyword.CLIENT_SECRET;
+import static org.openhab.core.auth.oauth2client.internal.Keyword.GRANT_TYPE;
+import static org.openhab.core.auth.oauth2client.internal.Keyword.PASSWORD;
+import static org.openhab.core.auth.oauth2client.internal.Keyword.REFRESH_TOKEN;
+import static org.openhab.core.auth.oauth2client.internal.Keyword.SCOPE;
+import static org.openhab.core.auth.oauth2client.internal.Keyword.USERNAME;
 
 import java.util.HashMap;
 import java.util.Map;
